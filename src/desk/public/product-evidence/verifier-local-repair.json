@@ -1,0 +1,78 @@
+{
+  "kind": "derived-controlled-local-repair-summary",
+  "derived": true,
+  "projection": "Original summary values retained; local storage log paths omitted. This download is not the primary artifact.",
+  "source": {
+    "recordedAt": "2026-10-04T15:16:51.831Z",
+    "primarySha256": "db35374065981fe3b1872eaf6222087fb62af8b37bd3c42187f27723b2a798a3",
+    "authority": "Original primary report retained in the upstream reviewed suite at commit ebd0707416912566325ff8ce806dd220579e7ae0; not included in this standalone repository."
+  },
+  "capturedAt": "2026-10-04T15:57:24.753Z",
+  "observation": "Existing saved local repair reopened in the current desk UI; runner not rerun.",
+  "status": "verified_local_repair",
+  "evidenceScope": "local-controlled-provider",
+  "repairSource": "deterministic-local-template",
+  "liveInferenceVerified": false,
+  "sandboxExecutionVerified": false,
+  "checks": {
+    "regressionFailedBefore": true,
+    "regressionPassedAfter": true,
+    "failuresExposedBefore": true,
+    "failuresDisclosedAfter": true,
+    "successfulPathPreserved": true,
+    "sourceEvidenceMatches": true,
+    "unchangedContract": true,
+    "unchangedRegression": true,
+    "originalSourceUnchanged": true
+  },
+  "scenarios": [
+    {
+      "scenario": "provider-fail",
+      "before": {
+        "kind": "contract_violation",
+        "reason": "provider failure did not satisfy the unavailable-response contract"
+      },
+      "after": {
+        "kind": "observed_honest_failure",
+        "reason": "provider failure was represented honestly to the user"
+      },
+      "beforeEvidence": "before/provider-fail/evidence.json",
+      "afterEvidence": "after/provider-fail/evidence.json"
+    },
+    {
+      "scenario": "malformed",
+      "before": {
+        "kind": "contract_violation",
+        "reason": "malformed provider response did not satisfy the unavailable-response contract"
+      },
+      "after": {
+        "kind": "observed_honest_failure",
+        "reason": "malformed provider response was represented honestly to the user"
+      },
+      "beforeEvidence": "before/malformed/evidence.json",
+      "afterEvidence": "after/malformed/evidence.json"
+    },
+    {
+      "scenario": "marker",
+      "before": {
+        "kind": "observed_controlled_path",
+        "reason": "synthetic provider marker reached the user-visible answer; live inference remains unverified"
+      },
+      "after": {
+        "kind": "observed_controlled_path",
+        "reason": "synthetic provider marker reached the user-visible answer; live inference remains unverified"
+      },
+      "beforeEvidence": "before/marker/evidence.json",
+      "afterEvidence": "after/marker/evidence.json"
+    }
+  ],
+  "regression": {
+    "beforeExitCode": 1,
+    "afterExitCode": 0,
+    "sha256": "21413130c03c40a0359fc6bd6cdd4e0617eec63d8e53a53280ae036bb5e3a032"
+  },
+  "contractSha256": "8f283ce90526093778aaed7322679cace02ee7f8612a18d2a2e7ad7edeb96bda",
+  "originalSourceSha256": "ca32b07a6c904dd760c9a37c4b3380e5391644bc70ce3778c6d759ef158d2c3b",
+  "repairedSourceSha256": "46464e0d4ed9cbdcb20f3f974c83673b37aeddcf15532bdd8ebb2ee93ecbe7db",
+  "attestation": "Primary hash only; this is not signed proof or cryptographic attestation of every trace artifact."
+}

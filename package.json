@@ -1,0 +1,27 @@
+{
+  "name": "integration-verifier",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/desk/server.js",
+    "check": "node scripts/check-syntax.js",
+    "pretest": "npm run check",
+    "test": "node --test --test-concurrency=1 test/*.test.js",
+    "test:smoke": "node --test --test-concurrency=1 test/standaloneServer.test.js test/standaloneBrowser.test.js",
+    "verify:fake": "node src/verifier/cli.js --app fake-fallback --scenario provider-fail",
+    "verify:honest": "node src/verifier/cli.js --app honest-live --scenario marker",
+    "verify:declared": "node src/verifier/cli.js --app declared-fallback --scenario provider-fail",
+    "verify:local-suite": "node src/verifier/suiteCli.js",
+    "verify:repair": "node src/verifier/replayCli.js",
+    "preflight:tokenfactory": "node src/integrations/preflight.js",
+    "preflight:tokenfactory:chat": "node src/integrations/preflight.js --chat"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "playwright": "^1.63.0"
+  }
+}

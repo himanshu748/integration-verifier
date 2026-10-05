@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Inspect hidden fallbacks in bundled Node AI apps. Compare the provider condition with the answer users see, then inspect an unchanged repair regression.">
+  <title>Integration Verifier — follow the provider to the answer</title>
+  <link rel="icon" href="data:,"><link rel="stylesheet" href="/marketing.css"><link rel="stylesheet" href="/verifier-design.css">
+  <script type="module" src="/verifier-landing.js"></script>
+</head>
+<body class="verifier-landing">
+<a class="skip-link" href="#main">Skip to content</a>
+<main id="main">
+  <div class="verifier-cover">
+    <header class="marketing-nav marketing-shell">
+      <a class="marketing-brand" href="/products/verifier"><svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M12 5H5v22h7M20 5h7v22h-7M11 16l4 4 7-9" stroke="currentColor" stroke-width="2.5"/></svg>Integration Verifier</a>
+      <nav class="marketing-links" aria-label="Main navigation"><a href="/">Home</a><a href="#recorded-repair">Recorded repair</a><a class="marketing-button" href="/verifier">Open verifier <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.8"/></svg></a></nav>
+    </header>
+    <section class="verifier-hero marketing-shell">
+      <h1>Did the provider<br>reach the user?</h1>
+      <div class="verifier-intro">
+        <p>A broken integration can still produce a convincing answer.</p>
+        <p class="hero-support">For builders checking a Node app with a server-side chat endpoint: make the provider fail, inspect the browser result, and replay the same tests after a repair.</p>
+        <a class="marketing-button solid" href="/verifier">Run a controlled check <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8"/></svg></a>
+        <span class="hero-footnote">Working local prototype · trusted bundled samples only</span>
+      </div>
+    </section>
+    <section class="evidence-instrument marketing-shell" aria-labelledby="evidence-title" data-condition="failure">
+      <div class="instrument-heading"><h2 id="evidence-title">Change the condition. Inspect the claim.</h2><span class="sample-note">Interactive illustration · synthetic responses</span></div>
+      <div class="sample-control"><label for="demo-sample">Sample application</label><select id="demo-sample" disabled><option value="hidden">Hidden fallback</option><option value="dependent">Provider-dependent app</option><option value="disclosed">Disclosed fallback</option></select><p id="demo-sample-note">The shared contract requires failure disclosure. This sample hides its fallback.</p></div>
+      <div class="scenario-controls" role="group" aria-label="Illustrative provider condition"><button type="button" data-scenario="failure" aria-pressed="true" disabled>Provider unavailable</button><button type="button" data-scenario="malformed" aria-pressed="false" disabled>Malformed response</button><button type="button" data-scenario="marker" aria-pressed="false" disabled>Successful response</button></div>
+      <noscript><p class="verifier-no-script">This static illustration shows a hidden fallback during provider failure. Enable JavaScript to compare the other samples and conditions; the recorded repair below is readable without it.</p></noscript>
+      <div class="evidence-comparison" aria-live="polite" aria-atomic="false">
+        <section class="observation"><div class="observation-label"><span>Provider observation</span><span id="demo-provider-code" class="small-code">HTTP 503</span></div><div class="signal-line" aria-hidden="true"><span></span><span></span><span></span><span class="broken"></span><span></span><span></span><span></span></div><h3 id="demo-provider">The provider is unavailable.</h3><p id="demo-provider-detail">The request failed. No generated answer came back.</p><code id="demo-wire">{ "error": "provider_unavailable" }</code></section>
+        <section class="observation user-observation"><div class="observation-label"><span>User-visible result</span><span id="demo-app-code" class="small-code">HTTP 200</span></div><div class="demo-output"><span id="demo-output-label">“Your launch checklist is ready.”</span><div class="output-lines" aria-hidden="true"><i></i><i></i><i></i></div></div><h3 id="demo-app">The app still claims success.</h3><p id="demo-app-detail">A hardcoded fallback quietly replaces the missing response.</p></section>
+      </div>
+      <div class="instrument-verdict" role="status"><span id="demo-verdict">Contract violation</span><p id="demo-reason">A successful-looking screen is not proof of a working integration.</p><a href="/verifier">Check the real sample <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8"/></svg></a></div>
+      <p class="instrument-boundary">This illustration runs in your browser. It does not start a verification, save a record, or request inference.</p>
+    </section>
+  </div>
+  <section class="verifier-proof marketing-shell" id="recorded-repair" aria-labelledby="repair-proof-title">
+    <div class="verifier-proof-intro">
+      <h2 id="repair-proof-title">The same tests.<br>A different result.</h2>
+      <p>This capture shows a recorded local repair reopened in the workbench. The hidden fallback failed both unavailable-response conditions before the patch, disclosed both failures afterward, and preserved the marker path.</p>
+      <p class="proof-scope">Controlled local run · 4 October 2026.<br>New screenshot of saved evidence, not a new test run. No live model or Sandbox execution.</p>
+      <a class="marketing-button proof-download" href="/product-evidence/verifier-local-repair.json" download>Download the recorded comparison</a>
+    </div>
+    <figure class="verifier-proof-figure">
+      <picture class="product-evidence-picture"><source media="(max-width: 600px)" srcset="/product-evidence/verifier-local-repair-mobile.png" width="316" height="686"><img src="/product-evidence/verifier-local-repair-desktop.png" width="952" height="386" loading="lazy" decoding="async" alt="Actual Integration Verifier table: two contract violations before repair become disclosed failures after repair; the successful marker is observed before and after." data-evidence-image></picture>
+      <p class="evidence-image-fallback" hidden>The workbench screenshot could not load. The recorded outcomes remain available in the table below and the JSON download.</p>
+      <figcaption>Actual local workbench · unchanged three-scenario regression. Screenshot captured on 4 October 2026.</figcaption>
+      <details class="verifier-record-text"><summary>Read the recorded outcomes and integrity boundary</summary>
+        <div class="proof-table-wrap"><table class="proof-table"><caption>Recorded local repair outcomes</caption><thead><tr><th scope="col">Condition</th><th scope="col">Before</th><th scope="col">After</th></tr></thead><tbody><tr><th scope="row">Provider unavailable</th><td>Contract violation</td><td>Failure disclosed</td></tr><tr><th scope="row">Malformed response</th><td>Contract violation</td><td>Failure disclosed</td></tr><tr><th scope="row">Successful marker</th><td>Controlled path observed</td><td>Controlled path observed</td></tr></tbody></table></div>
+        <p>Original source preserved. Contract and regression unchanged. The saved receipt binds the primary report bytes with SHA-256; unsigned local hashes are not provider attestation.</p>
+        <p class="proof-hash">Original primary-report SHA-256:<code>db35374065981fe3b1872eaf6222087fb62af8b37bd3c42187f27723b2a798a3</code></p>
+      </details>
+    </figure>
+  </section>
+  <section class="verifier-process marketing-shell" id="how-it-works">
+    <div class="section-intro"><h2>Leave a trail<br>someone can inspect.</h2><p>The verdict answers one contract question. The retained evidence shows how that answer was reached.</p></div>
+    <ol class="process-list">
+      <li><span class="process-number">01</span><div><h3>Reproduce the condition.</h3><p>Chromium opens the bundled app and submits your prompt. The controlled provider fails, returns malformed data, or supplies a distinctive marker.</p></div><span class="process-tag">Browser</span></li>
+      <li><span class="process-number">02</span><div><h3>Inspect both sides.</h3><p>Keep the provider request log, displayed answer, screenshot, trace and verdict together. Reopen a saved run or download its scenario evidence.</p></div><span class="process-tag">Evidence</span></li>
+      <li><span class="process-number">03</span><div><h3>Replay an unchanged regression.</h3><p>The deterministic repair runs in a temporary copy. A missing or altered primary report remains unverified. A failed execution is not a passing repair.</p></div><span class="process-tag">Repair</span></li>
+    </ol>
+  </section>
+  <section class="verifier-close"><div class="marketing-shell close-layout"><h2>Start with the<br>hidden fallback.</h2><div><p>Make its provider unavailable. See what the app tells the user. Then inspect what the repair changes.</p><a class="marketing-button solid" href="/verifier">Open the workbench <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8"/></svg></a><p class="scope-note">Live sponsor proof is unverified. Optional NVIDIA Nemotron generation and Nebius Sandbox execution need verified account access, configuration and your explicit consent. These local records do not establish arbitrary repository correctness.</p></div></div></section>
+</main>
+<footer class="marketing-footer marketing-shell"><a class="marketing-brand" href="/products/verifier">Integration Verifier</a><p>Observe the integration. Retain the evidence.</p><a href="/">Home</a></footer>
+</body></html>

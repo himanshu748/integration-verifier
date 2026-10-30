@@ -1,7 +1,7 @@
 """Pinned ConTree 0.3.6 adapter. stdin/stdout are JSON; credentials stay in env.
 
 Source: https://pypi.org/project/contree-sdk/0.3.6/
-The published SDK uses ContreeConfig/IAMAuth, unlike unreleased web examples.
+Uses the published 0.3.6 ContreeConfig/IAMAuth interfaces.
 No network or SDK import happens until main() explicitly invokes run().
 """
 import base64
@@ -46,6 +46,10 @@ def sdk_factory():
         transport_timeout=30, operation_timeout=600, operation_import_timeout=300,
         operation_run_timeout=600, default_truncate_output_at=65536,
     ))
+    # A timed-out submission may already be running. The pinned SDK retries
+    # operation starts by default; never replay one behind a single reservation.
+    for _, retrier in sdk._operations.values():
+        retrier.retry_max_amount = 0
     sdk.operation_ids = []
     return sdk, NotFoundError
 

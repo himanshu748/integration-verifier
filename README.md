@@ -16,6 +16,12 @@ npm start
 
 Open `http://127.0.0.1:4190/` for the landing. The same landing is available at `/products/verifier`; the working UI is at `/verifier`. `DESK_PORT` changes the port. `DESK_WORKSPACE` selects the parent directory of local projects where applicable. Managed records are stored beneath `work/desk` in that workspace; keep this directory private and outside version control.
 
+## Current sponsor workflow
+
+Nemotron proposes a repair from the bundled sample and its contract. Token Factory Sandbox executes generated code against unchanged browser checks. Tavily retrieves provider documentation; selected passages feed a separately reviewed Nemotron contract checklist.
+
+Live requests use explicit consent, bounded inputs and a default-deny free-usage guard. See [sponsor setup and receipt boundaries](SPONSORS.md), [recording plan](demo/storyboard.md), and [current release validation](RELEASE-VALIDATION.md). The existing product captures below are historical local observations, not proof of the new sponsor workflow.
+
 ## Verify
 
 ```sh
@@ -31,7 +37,7 @@ See [selected validation](VALIDATION.md) for the current check scope and results
 
 Inspect bundled Node samples under unavailable, malformed and marker provider conditions. Local deterministic repair runs an unchanged regression in a temporary copy. Only trusted bundled samples run locally; arbitrary repositories are unsupported. Optional generated repair and Token Factory Sandbox execution require separately verified access, explicit consent, and configuration. Sandbox adapter dependencies are pinned in requirements-sandbox.txt; install them in a private virtual environment only when intentionally configuring that optional capability.
 
-Live sponsor inference and remote execution proof remain unverified. `.env.example` lists only this product's optional settings. Never commit `.env`, tokens, runtime records or user-selected project files. The server checks exact local Host/Origin, requires a session token for APIs, bounds request size, and serves only explicit static assets. Sibling product pages and APIs are absent.
+No live inference or remote execution was performed by this checkout’s fixture tests; verify release-specific sponsor evidence separately. `.env.example` lists only this product's optional settings. Never commit `.env`, tokens, runtime records or user-selected project files. The server checks exact local Host/Origin, requires a session token for APIs, bounds request size, and serves only explicit static assets. Sibling product pages and APIs are absent.
 
 ## Product capture
 

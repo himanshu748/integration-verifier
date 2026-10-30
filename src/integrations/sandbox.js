@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { lstat, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createFreeUsageGuard } from './freeUsage.js';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 export const SANDBOX_BUNDLE_FILES = Object.freeze([
@@ -69,6 +70,8 @@ export async function runSandboxVerification(input, { env = process.env, executo
   const childEnv = Object.fromEntries(['PATH', 'HOME', 'TMPDIR', 'NEBIUS_API_KEY', 'NEBIUS_PROJECT_ID'].filter((key) => env[key] !== undefined).map((key) => [key, env[key]]));
   const payload = { version: 1, image, outputDir: input.outputDir, files, artifacts: SANDBOX_ARTIFACTS,
     request: { type: input.type, app: input.app, scenario: input.scenario, prompt: input.prompt, candidateSource: input.candidateSource } };
+  const freeUsage = executor === executePython
+    ? await createFreeUsageGuard({ provider: 'nebius-sandbox', env }).reserve({ operation: 'sandbox-verification' }) : null;
   let remote;
   try { remote = await executor(payload, childEnv); }
   catch { throw new Error('Sandbox execution or evidence retrieval failed; no verified Sandbox receipt was produced.'); }
@@ -105,7 +108,7 @@ export async function runSandboxVerification(input, { env = process.env, executo
     liveSandboxVerified, status: liveSandboxVerified ? 'verified' : 'fixture-verified', executionId: remote.executionId,
     image: remote.image, baseImage: image, setupImage: remote.setupImage ?? null, exitCode: remote.exitCode,
     artifactHashes, bundle: manifest, ...(input.candidateSource ? { candidateSourceSha256: digest(input.candidateSource) } : {}),
-    recordedAt: new Date().toISOString(), liveInferenceVerified: false };
+    recordedAt: new Date().toISOString(), liveInferenceVerified: false, freeUsage };
   await writeFile(path.join(input.outputDir, 'sandbox.json'), JSON.stringify(receipt, null, 2), { flag: 'wx', mode: 0o600 });
   return { outputDir: input.outputDir, receipt };
 }

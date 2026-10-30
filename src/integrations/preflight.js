@@ -1,64 +1,30 @@
-import {
-  chooseCandidateModel,
-  getTokenFactoryConfig,
-  listTokenFactoryModels,
-  runTokenFactoryChat,
-  TokenFactoryError
-} from "./tokenFactory.js";
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createInferenceRuntime } from './runtime.js';
 
-const shouldRunChat = process.argv.includes("--chat");
-try { process.loadEnvFile('.env'); }
-catch (error) { if (error.code !== 'ENOENT') throw new Error('Could not load local .env configuration.'); }
-const config = getTokenFactoryConfig();
+export async function runPreflight({ chat = false, env = process.env, fetchImpl } = {}) {
+  const runtime = createInferenceRuntime({ env, fetchImpl });
+  const result = await runtime.catalog();
+  if (!chat) return { ...result, liveChat: null };
+  const { value, inference } = await runtime.generate({
+    purpose: 'token-factory-preflight', schemaName: 'token_factory_preflight',
+    schema: { type: 'object', additionalProperties: false, required: ['result'], properties: { result: { const: 'token-factory-preflight-ok', type: 'string' } } },
+    system: 'Return the required JSON object with result set to token-factory-preflight-ok.',
+    input: { task: 'Check structured inference connectivity only.' }, maxTokens: 64,
+  });
+  return { ...result, status: inference.liveInferenceVerified ? 'live_inference_verified' : 'fixture_inference_verified',
+    liveInferenceVerified: inference.liveInferenceVerified, liveChat: { value, inference },
+    note: 'Structured inference connectivity only. This does not verify any product workflow, Sandbox execution, or Cloud Job.' };
+}
 
-try {
-  const models = await listTokenFactoryModels(config);
-  const candidate = chooseCandidateModel(models, config.model);
-  const result = {
-    status: "model_listing_verified",
-    liveInferenceVerified: false,
-    baseUrl: config.baseUrl,
-    modelCount: models.length,
-    configuredModelFound: config.model ? Boolean(candidate) : null,
-    candidateModel: candidate ? {
-      id: candidate.id,
-      name: candidate.name || null,
-      ownedBy: candidate.owned_by || null
-    } : null,
-    liveChat: null
-  };
-
-  if (shouldRunChat) {
-    if (!candidate?.id) {
-      throw new Error("No model is available for live chat preflight");
-    }
-    const chat = await runTokenFactoryChat({
-      ...config,
-      model: config.model || candidate.id,
-      prompt: "Reply with exactly: token-factory-preflight-ok"
-    });
-    result.liveChat = {
-      status: "ok",
-      model: chat.model,
-      contentPreview: chat.content.slice(0, 120)
-    };
-    result.status = "live_inference_verified";
-    result.liveInferenceVerified = true;
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  try {
+    if (process.argv.slice(2).some((argument) => argument !== '--chat') || process.argv.slice(2).length > 1) throw new Error('Use no arguments for catalog inspection, or --chat for one guarded structured inference request.');
+    try { process.loadEnvFile('.env'); }
+    catch (error) { if (error.code !== 'ENOENT') throw new Error('Could not load local .env configuration.'); }
+    console.log(JSON.stringify(await runPreflight({ chat: process.argv.includes('--chat') }), null, 2));
+  } catch (error) {
+    console.error(JSON.stringify({ status: 'not_verified', reason: error.message }, null, 2));
+    process.exitCode = /NEBIUS_API_KEY/.test(error.message) ? 78 : 1;
   }
-
-  console.log(JSON.stringify(result, null, 2));
-} catch (error) {
-  const result = {
-    status: "not_verified",
-    reason: error instanceof Error ? error.message : String(error)
-  };
-
-  if (error instanceof TokenFactoryError) {
-    result.code = error.code;
-    result.httpStatus = error.status;
-    result.response = error.body;
-  }
-
-  console.error(JSON.stringify(result, null, 2));
-  process.exitCode = /NEBIUS_API_KEY/.test(result.reason) ? 78 : 1;
 }

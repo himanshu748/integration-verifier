@@ -60,13 +60,14 @@ test("token factory config does not invent credentials", () => {
   assert.equal(config.model, "");
 });
 
-test("candidate model selection prefers configured model", () => {
+test("candidate model selection accepts only configured NVIDIA Nemotron models", () => {
   const models = [
     { id: "meta/example" },
     { id: "nvidia/example-nemotron" }
   ];
 
-  assert.deepEqual(chooseCandidateModel(models, "meta/example"), { id: "meta/example" });
+  assert.equal(chooseCandidateModel(models, "meta/example"), null);
+  assert.deepEqual(chooseCandidateModel(models, "nvidia/example-nemotron"), { id: "nvidia/example-nemotron" });
   assert.deepEqual(chooseCandidateModel(models), { id: "nvidia/example-nemotron" });
   assert.equal(chooseCandidateModel([{ id: "meta/example" }]), null);
 });

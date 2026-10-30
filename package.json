@@ -15,7 +15,8 @@
     "verify:local-suite": "node src/verifier/suiteCli.js",
     "verify:repair": "node src/verifier/replayCli.js",
     "preflight:tokenfactory": "node src/integrations/preflight.js",
-    "preflight:tokenfactory:chat": "node src/integrations/preflight.js --chat"
+    "preflight:tokenfactory:chat": "node src/integrations/preflight.js --chat",
+    "narration": "node scripts/deepgram_narration.mjs"
   },
   "engines": {
     "node": ">=22"

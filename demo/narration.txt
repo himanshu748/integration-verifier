@@ -1,0 +1,14 @@
+The provider failed. The page still returned an answer.
+
+Integration Verifier catches that gap. In this bundled example, I run a controlled failure through the real browser workflow. The app hides the failure behind a fallback. The receipt connects the displayed answer to the provider request and the contract it violated.
+
+Two more checks cover a malformed response and a unique marker that must reach the visible answer. The marker establishes this controlled path; it does not prove live model inference.
+
+For the repair, NVIDIA Nemotron on Nebius Token Factory reads the sample and contract, then proposes a candidate. Generated code runs in a Token Factory Sandbox. The same three browser checks run before and after the change. I review their outcomes alongside the candidate hash and separate inference and execution receipts.
+
+The useful result is an honest failure when the provider fails, while a successful response still reaches the user. An interrupted execution remains unverified.
+
+I use Tavily to retrieve public documentation for the error contract, inspect the returned passages, and select the sources for Nemotron. It drafts a cited review checklist. The search and inference have separate receipts. The checklist does not prove that a repair works.
+
+This version handles the bundled Node sample. It does not repair arbitrary repositories. The saved patch, browser trace and test results let another developer inspect exactly what happened.
+
